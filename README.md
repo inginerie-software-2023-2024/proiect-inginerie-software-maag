@@ -10,8 +10,18 @@ Project made by:
 
 ## Documenting the existing application from MDS
 
-📗 The documentation of the app from MDS can be found [here]().
+📗 The documentation of the app from MDS can be found [here](https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-maag/blob/main/Documentation_for_MDS_project.pdf).
 
 ## Problem Statement or Product Vision
 
-The Product Vision for Petbook app.
+The Product Vision for the Petbook app can be found [here](https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-maag/blob/main/Product_vision.pdf).
+
+## Product features and functionalities
+
+## Non-functional requirements
+
+Non functional requirements can be found [here](https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-maag/blob/main/NF-Requirements.pdf).
+
+
+
+
