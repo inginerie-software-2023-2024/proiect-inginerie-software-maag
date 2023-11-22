@@ -24,7 +24,7 @@
     }
 </style>
 
-<div class="card-body" style="background-color:#f7f7f2; padding: 0">
+<div  class="card-body" style="background-color:#f7f7f2; padding: 0">
     <div class="row">
         <div id="postdiv-@Model.PostId">
             <div class="d-flex col rounded-top" style="background-color: #eab676; width: 100%; margin:auto">
@@ -51,10 +51,14 @@
                         <span id="comm-btn-@Model.PostId" type="button" class="mx-3"><i class="bi bi-chat" style="font-size: 1.4rem"></i></span>
                     </div>
                     
-                    <span>
-                        <span onclick="delPost('@Model.PostId')" class="mx-1"><i class="bi bi-trash3" style="font-size: 1.2rem"></i></span>
-                        <a style="text-decoration: none;color:#262424" href="/Posts/Edit/@Model.PostId" class="px-1"><i class="bi bi-pencil-square" style="font-size: 1.2rem"></i></a>
-                    </span>
+                    @if (Model.Pet.UserId == ViewBag.LoggedUser)
+                    {
+                        <span>
+
+                            <span onclick="delPost('@Model.PostId')" class="mx-1"><i class="bi bi-trash3" style="font-size: 1.2rem"></i></span>
+                            <a style="text-decoration: none;color:#262424" href="/Posts/Edit/@Model.PostId" class="px-1"><i class="bi bi-pencil-square" style="font-size: 1.2rem"></i></a>
+                        </span>
+                    }
                 </div>
                 <br />
                 <div class="m-2" style="text-align:left">
@@ -273,8 +277,13 @@
         });
     }
 
-    function delPost(postId){
-        $.post("/Posts/Delete/" + postId, null);
+    function delPost(postId) {
+        $.post("/Posts/Delete/" + postId, null, function (data, status) {
+            if (status == "success") {
+                $('#myModal').modal("hide");
+                $('#post-div-' + postId).remove();
+            }
+        });
     }
 
 

@@ -32,31 +32,21 @@ namespace Petbook.Controllers
         [Authorize(Roles = "User,Admin")]
         public IActionResult Index()
         {
-            /*
-            var userId = _userManager.GetUserId(User);
-            var user = db.ApplicationUsers
-                                    .Include("Following")
-                                    .Where(u => u.Id == userId)
-                                    .First();
-            
 
-            var posts = new List<Post>();
-               foreach(var u in user.Following)
-            {
-
-            }
-            */
+            var user = db.Users.Include("Following").Where(u => u.Id == _userManager.GetUserId(User)).First();
             var posts = db.Posts.Include("Pet")
                                 .Include("Pet.User")
                                 .Include("PostLikes")
                                 .Include("Comments")
                                 .Include("Comments.User")
                                 .Where(p => p.Pet.UserId != _userManager.GetUserId(User))
+                                .Where(p => user.Following.Contains(p.Pet.User))
                                 .OrderByDescending(p => p.PostDate)
                                 .ToList();
 
-            ViewBag.Posts = posts;
 
+            ViewBag.Posts = posts;
+            ViewBag.LoggedUser = _userManager.GetUserId(User);
             if (TempData.ContainsKey("message"))
             {
                 ViewBag.Message = TempData["message"];
@@ -74,10 +64,11 @@ namespace Petbook.Controllers
                                 .Include("Comments")
                                 .Include("Comments.User")
                                 .OrderByDescending(p => p.PostDate)
+                                .Where(p => p.Pet.UserId != _userManager.GetUserId(User))
                                 .ToList();
 
             ViewBag.ExplorePosts = posts;
-
+            ViewBag.LoggedUser = _userManager.GetUserId(User);
             if (TempData.ContainsKey("message"))
             {
                 ViewBag.Message = TempData["message"];
@@ -102,6 +93,7 @@ namespace Petbook.Controllers
                                 .First();
           
             ViewBag.UserCurent = post.Pet.UserId;
+            ViewBag.LoggedUser = _userManager.GetUserId(User); 
             return View(post);
         }
 
@@ -128,7 +120,7 @@ namespace Petbook.Controllers
                                 .Include("Comments.User")
                                 .Where(p => p.PostId == comment.PostId)
                                 .First();
-
+     
                 return View(p);
             }
         }
@@ -142,6 +134,7 @@ namespace Petbook.Controllers
                                 .Include("Comments.User")
                                 .Where(p => p.PostId == id)
                                 .First();
+            ViewBag.LoggedUser = _userManager.GetUserId(User);
             return PartialView("PostInfo", post);
         }
        
@@ -204,8 +197,7 @@ namespace Petbook.Controllers
             }
             else
             {
-                TempData["message"] = "Cannot edit the posts that aren't yours";
-                return RedirectToAction("Show/"+id);
+                return Unauthorized("NOT_YOUR_OWN_POST");
             }
 
         }
@@ -255,11 +247,13 @@ namespace Petbook.Controllers
             Post post = db.Posts.Include("Pet")
                                 .Where(p => p.PostId == id)
                                 .First();
+           
             if (post.Pet.UserId == _userManager.GetUserId(User) || User.IsInRole("Admin"))
             {
                 db.Posts.Remove(post);
                 db.SaveChanges();
                 TempData["message"] = "The post has been deleted";
+
                 return Redirect("/Pets/Show/" + post.Pet.PetId);
             }
             else
