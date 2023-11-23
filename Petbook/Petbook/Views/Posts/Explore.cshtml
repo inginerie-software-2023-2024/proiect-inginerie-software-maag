@@ -34,11 +34,11 @@
     }
 </script>
 
-<div class="row">
+<div class="row" id="post-div">
     @foreach (var post in ViewBag.ExplorePosts)
     {
-        <div class="col-md-4 mb-4"> 
-             <img onclick="openPopup(@post.PostId)" src="@post.PostPhoto" alt="Post Photo" class="w-100 h-100 rounded">
+        <div id="post-div-@post.PostId" class="col-md-4 mb-4">
+            <img onclick="openPopup(@post.PostId)" src="@post.PostPhoto" alt="Post Photo" class="w-100 h-100 rounded">
         </div>
     }
 </div>

@@ -62,15 +62,15 @@ namespace Petbook.Controllers
         [Authorize(Roles = "User,Admin")]
         public void FollowUserById([FromRoute] String userId)
         {
-            var currenUserId = _userManager.GetUserId(User);
+            var currentUserId = _userManager.GetUserId(User);
             var currentUser = db.ApplicationUsers
-                        .Include("Followers")
-                        .Where(u => u.Id == currenUserId)
+                        .Include("Following")
+                        .Where(u => u.Id == currentUserId)
                         .First();
             var followingUser = db.ApplicationUsers
                         .Where(u => u.Id == userId)
                         .First();
-            currentUser.Followers.Add(followingUser);
+            currentUser.Following.Add(followingUser);
             db.SaveChanges();
         }
 
