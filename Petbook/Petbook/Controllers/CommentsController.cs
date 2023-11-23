@@ -66,6 +66,10 @@ namespace Petbook.Controllers
                               .Include("Post.Pet.User")
                               .Where(c => c.CommentId == commId)
                               .First();
+          
+            if(comment.UserId == _userManager.GetUserId(User)){
+                return Unauthorized("UNAOTHORIZED");
+            }
 
             db.Comments.Remove(comment);
             db.SaveChanges();
