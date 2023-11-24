@@ -52,6 +52,7 @@ namespace Petbook.Controllers
                                 .Where(p => p.PetId == id)
                                 .First();
             ViewBag.UserCurent = pet.UserId;
+            ViewBag.LoggedUser = _userManager.GetUserId(User);
             return View(pet);
         }
 
