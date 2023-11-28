@@ -45,7 +45,7 @@
                 <div class="d-flex col justify-content-between">
                     <div class="d-flex col justify-content-left mx-2 my-1">
                         <span id="like-btn-@Model.PostId">
-                            <i id="like-btn-icon-@Model.PostId" class="bi bi-hand-thumbs-up" style="font-size: 1.4rem"></i></a>
+                            <i id="like-btn-icon-@Model.PostId" class="bi bi-hand-thumbs-up" style="font-size: 1.4rem"></i>
                             <span id="like-count-@Model.PostId">@Model.PostLikes.Count</span>
                         </span>
                         <span id="comm-btn-@Model.PostId" type="button" class="mx-3"><i class="bi bi-chat" style="font-size: 1.4rem"></i></span>
@@ -137,6 +137,26 @@
         });
         
     });
+    
+    $('#like-count-' + @Model.PostId).on('click', function (ev) {
+        $.ajax({
+            type: "POST",
+            url: '/Posts/LikesPopup/' + @Model.PostId,
+            contentType: "application/text; charset=utf-8",
+            dataType: "text",
+            async: false,
+            success: function (data) {
+                $('.modal-body').html(data);
+                $("#likesModal").modal("show");
+                $('#likesModal').on('hidden.bs.modal', function () {
+                    var modalDialog = $('.modal-dialog');
+                    modalDialog.css('width', '32vw');
+                    $('#likesModal').off('hidden.bs.modal');
+                })
+            }
+        });
+    });
+
     $(document).ready(function () {
         $.post("/PostLikes/IsLikedByCurrentUser/" + @Model.PostId, null, function (data, status) {
             if (status == "success") {
