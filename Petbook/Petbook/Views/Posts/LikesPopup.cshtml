@@ -1,0 +1,40 @@
+﻿@model Petbook.Models.PostLike
+
+<div>
+    <h4>Likes:</h4>
+    @if (ViewBag != null)
+    {
+        @foreach (var like in ViewBag.Likes)
+        {
+            <div class="card">
+                <div class="card-body">
+                    <span style="float:left; max-width:50px"><img src="@like.User.ProfilePhoto" class="rounded-circle px-2 py-2 align-content-start" style="width:90%; margin-right:10px" /></span>
+                    <span style="float:left; font-size:14px; height: 45px" class="mt-2">
+                        @like.User.UserName
+                    </span>
+                    @if (!ViewBag.Following.Contains(@like.User))
+                    {
+                        <span id="like-user-row-@like.User.Id" style="float:right;" class="px-4 pb-3">
+                            <span onclick="followUserById('@like.User.Id')" class="btn" style="border-color:#eab676; background-color: #eab676; color:white">Follow</span>
+                        </span>
+                    }
+                </div>
+            </div>
+        }
+    }
+</div>
+
+<script>
+    function followUserById(userId) {
+        $.ajax({
+            type: "POST",
+            url: '/ApplicationUsers/FollowUserById/' + userId,
+            contentType: "application/text; charset=utf-8",
+            dataType: "text",
+            async: false,
+            success: function (data) {
+                $('#like-user-row-' + userId).remove();
+            }
+        })
+    }
+</script>

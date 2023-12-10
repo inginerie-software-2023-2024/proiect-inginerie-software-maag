@@ -145,6 +145,23 @@ namespace Petbook.Controllers
 
             return PartialView("PostInfo", post);
         }
+
+        [Authorize(Roles = "User,Admin")]
+        public IActionResult LikesPopup(int id)
+        {
+            var likes = db.PostLikes.Include("User")
+                                    .Include("Post")
+                                    .Where(u => u.UserId != _userManager.GetUserId(User))
+                                    .Where(p => p.PostId == id)
+                                    .OrderByDescending(p => p.AddedDate)
+                                    .ToList();
+            var currentUser = db.ApplicationUsers.Include("Following")
+                                .Where(u => u.Id == _userManager.GetUserId(User))
+                                .First();
+            ViewBag.Following = currentUser.Following;
+            ViewBag.Likes = likes;
+            return PartialView();
+        }
        
         // form for adding a new post
         [Authorize(Roles = "User,Admin")]

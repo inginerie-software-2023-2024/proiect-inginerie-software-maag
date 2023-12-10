@@ -137,6 +137,26 @@
         });
         
     });
+    
+    $('#like-count-' + @Model.PostId).on('click', function (ev) {
+        $.ajax({
+            type: "POST",
+            url: '/Posts/LikesPopup/' + @Model.PostId,
+            contentType: "application/text; charset=utf-8",
+            dataType: "text",
+            async: false,
+            success: function (data) {
+                $('.modal-body').html(data);
+                $("#likesModal").modal("show");
+                $('#likesModal').on('hidden.bs.modal', function () {
+                    var modalDialog = $('.modal-dialog');
+                    modalDialog.css('width', '32vw');
+                    $('#likesModal').off('hidden.bs.modal');
+                })
+            }
+        });
+    });
+
     $(document).ready(function () {
         $.post("/PostLikes/IsLikedByCurrentUser/" + @Model.PostId, null, function (data, status) {
             if (status == "success") {
