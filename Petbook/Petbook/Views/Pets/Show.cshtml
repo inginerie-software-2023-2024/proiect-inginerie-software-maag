@@ -77,14 +77,14 @@
 
 <div>
     <h3>Your posts: </h3>
-    <div class="d-flex flex-column justify-content-between">
+    <div class="d-flex flex-column justify-content-between" id="petProfilePosts">
 
         @for (int i = 0; i < @Model.Posts.Count; i += 3)
         {
             <div class="row">
                 @for (int j = i; j < i + 3 && j < @Model.Posts.Count; j++)
                 {
-                    <div class="col-md-4 mb-4">
+                    <div id ="@Model.Posts[j].PostId"class="col-md-4 mb-4">
                         <img onclick="openPostPopup(@Model.Posts[j].PostId)" src="@Model.Posts[j].PostPhoto" alt="Post Photo" class="w-100 h-100 rounded">
                     </div>
                 }

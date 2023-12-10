@@ -53,6 +53,7 @@ namespace Petbook.Controllers
                                 .First();
             ViewBag.UserCurent = pet.UserId;
             ViewBag.LoggedUser = _userManager.GetUserId(User);
+            ViewBag.CurrentPage = "Pets";
             return View(pet);
         }
 

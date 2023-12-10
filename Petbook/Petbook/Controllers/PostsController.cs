@@ -47,6 +47,8 @@ namespace Petbook.Controllers
 
             ViewBag.Posts = posts;
             ViewBag.LoggedUser = _userManager.GetUserId(User);
+            ViewBag.IsAdmin = User.IsInRole("Admin");
+            ViewBag.CurrentPage = "Feed";
             if (TempData.ContainsKey("message"))
             {
                 ViewBag.Message = TempData["message"];
@@ -69,6 +71,9 @@ namespace Petbook.Controllers
 
             ViewBag.ExplorePosts = posts;
             ViewBag.LoggedUser = _userManager.GetUserId(User);
+            ViewBag.CurrentPage = "Explore";
+            ViewBag.IsAdmin = User.IsInRole("Admin");
+
             if (TempData.ContainsKey("message"))
             {
                 ViewBag.Message = TempData["message"];
@@ -94,6 +99,7 @@ namespace Petbook.Controllers
           
             ViewBag.UserCurent = post.Pet.UserId;
             ViewBag.LoggedUser = _userManager.GetUserId(User); 
+
             return View(post);
         }
 
@@ -135,6 +141,8 @@ namespace Petbook.Controllers
                                 .Where(p => p.PostId == id)
                                 .First();
             ViewBag.LoggedUser = _userManager.GetUserId(User);
+            ViewBag.IsAdmin = User.IsInRole("Admin");
+
             return PartialView("PostInfo", post);
         }
        
