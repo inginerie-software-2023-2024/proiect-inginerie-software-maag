@@ -23,6 +23,9 @@ namespace Petbook.Data
         public DbSet<Post> Posts { get; set; }
         public DbSet<PostLike> PostLikes { get; set; }
         public DbSet<Tag> Tags { get; set; }
+        public DbSet<Chat> Chats { get; set; }
+        public DbSet<Message> Messages { get; set; }
+        public DbSet<UserInChat> UserInChats { get; set; }
 
         // Mock lists used for tests
         public List<Object> roles { get; set;  } 
@@ -81,6 +84,19 @@ namespace Petbook.Data
                 .WithMany(com => com.Comments)
                 .HasForeignKey(com => com.PostId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<UserInChat>()
+            .HasOne(uc => uc.User)
+            .WithMany(uc => uc.UserInChats)
+            .HasForeignKey(uc => uc.UserId);
+
+            modelBuilder.Entity<UserInChat>()
+            .HasOne(uc => uc.Chat)
+            .WithMany(uc => uc.UserInChats)
+            .HasForeignKey(uc => uc.ChatId);
+
+            modelBuilder.Entity<UserInChat>()
+            .HasKey(ug => new { ug.UserId, ug.ChatId });
         }
 
         private void CreateDbSetMock(List<List<Object>> initialEntities)

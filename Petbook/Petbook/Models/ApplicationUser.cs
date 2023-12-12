@@ -19,9 +19,9 @@ namespace Petbook.Models
         public virtual ICollection<Comment>? Comments { get; set; }
         public virtual ICollection<ApplicationUser>? Followers { get; set; }
         public virtual ICollection<ApplicationUser>? Following { get; set; }
-
         public virtual ICollection<BlogPost>? BlogPosts { get; set; }
         public virtual ICollection<BlogPostLike>? BlogPostLikes { get; set; }
+        public virtual ICollection<UserInChat>? UserInChats { get; set; }
 
         [NotMapped]
         public IEnumerable<SelectListItem>? AllRoles { get; set; }

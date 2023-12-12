@@ -151,7 +151,6 @@ namespace Petbook.Controllers
         {
             var likes = db.PostLikes.Include("User")
                                     .Include("Post")
-                                    .Where(u => u.UserId != _userManager.GetUserId(User))
                                     .Where(p => p.PostId == id)
                                     .OrderByDescending(p => p.AddedDate)
                                     .ToList();
@@ -159,6 +158,7 @@ namespace Petbook.Controllers
                                 .Where(u => u.Id == _userManager.GetUserId(User))
                                 .First();
             ViewBag.Following = currentUser.Following;
+            ViewBag.CurrentUserId = currentUser.Id;
             ViewBag.Likes = likes;
             return PartialView();
         }
