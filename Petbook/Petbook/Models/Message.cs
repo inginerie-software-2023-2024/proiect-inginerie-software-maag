@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Petbook.Models
 {
@@ -12,6 +13,7 @@ namespace Petbook.Models
         public string? MessageText { get; set; }
         public DateTime SendDate { get; set; }
         public int? ChatId { get; set; }
+        [JsonIgnore]
         public virtual Chat? Chat { get; set; }
      
 
