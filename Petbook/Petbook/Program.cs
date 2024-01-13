@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Petbook.Data;
+using Petbook.Hubs;
 using Petbook.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +16,9 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddSignalR();
+
 
 var app = builder.Build();
 
@@ -36,6 +40,8 @@ else
     app.UseHsts();
 }
 
+app.MapHub<ChatHub>("/Chat");
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
@@ -49,5 +55,7 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapRazorPages();
+
+
 
 app.Run();

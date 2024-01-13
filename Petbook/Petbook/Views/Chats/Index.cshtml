@@ -1,5 +1,5 @@
 ﻿@using System.Text.Json;
-
+@using Microsoft.AspNetCore.SignalR;
 
 <style>
     #chat3 .form-control {
@@ -20,6 +20,7 @@
     }
 </style>
 
+<script src="~/lib/signalr/dist/browser/signalr.js"></script>
 
 <div>
     <div class="container py-5">
@@ -57,7 +58,7 @@
                                                                     MaxDepth = 0,
                                                                     IgnoreNullValues = true,
                                                                     IgnoreReadOnlyProperties = true
-                                                                } ), @chat.ChatId,'@ViewBag.CurrentUser.Id')">
+                                                                } ), @chat.ChatId,'@ViewBag.CurrentUser.Id', @chat.UserInChats[0].UserId)">
                                                             <div>
                                                                 <img src=@chat.UserInChats[0].User.ProfilePhoto
                                                                      alt="avatar" class="d-flex align-self-center me-3" width="60" />
@@ -85,7 +86,7 @@
                                                         MaxDepth = 0,
                                                         IgnoreNullValues = true,
                                                         IgnoreReadOnlyProperties = true
-                                                    }), @chat.ChatId, '@ViewBag.CurrentUser.Id')">
+                                                    }), @chat.ChatId, '@ViewBag.CurrentUser.Id', @chat.UserInChats[1].UserId)">
                                                             <div>
                                                                 <img src=@chat.UserInChats[1].User.ProfilePhoto
                                                                      alt="avatar" class="d-flex align-self-center me-3" width="60" />
@@ -144,14 +145,20 @@
 
 
 <script>
+    var connection = new signalR.HubConnectionBuilder().withUrl("/Chat").build();
 
-    const showChat = (messages, chatId, currentUserId) => {
+    connection.start().catch(err => console.error(err.toString()));
 
-        console.log("am dat click")
-        console.log(messages)
-        console.log(chatId)
+    connection.on("ReceiveMessage", (senderUserId, message) => {
+        console.log(`Message from ${senderUserId}: ${message}`);
+    });
+
+    const showChat = (messages, chatId, currentUserId, otherUserId) => {
+
+
 
         localStorage.setItem("chatId", chatId);
+        l
         $("#chatBox").empty();
 
 
@@ -175,8 +182,16 @@
     }
 
 
+    function signalUser(receiverUserId, message) {
+        connection.invoke("SendMessage", receiverUserId, message).catch(err => console.error(err.toString()));
+    }
+
+
     const sendMessage = (senderId) => {
 
+
+
+        signalUser("")
 
         console.log($("#messageInput").val())
 
