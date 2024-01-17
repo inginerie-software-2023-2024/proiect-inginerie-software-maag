@@ -96,5 +96,14 @@ namespace Petbook.Controllers
             return Ok("message_sent");
         }
 
+        [HttpGet("/Chats/GetMessages/{chatId}")]
+        public IActionResult GetMessages([FromRoute] int chatId)
+        {
+           var messages = db.Chats.Include("Messages").Where(c => c.ChatId == chatId).First().Messages;
+
+           return Ok(messages);
+           
+        } 
+
     }
 }

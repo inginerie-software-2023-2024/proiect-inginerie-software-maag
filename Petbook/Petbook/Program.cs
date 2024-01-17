@@ -18,6 +18,9 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddSignalR();
+builder.Services.AddSingleton<IUserConnectionManager, UserConnectionManager>();
+
+
 
 
 var app = builder.Build();

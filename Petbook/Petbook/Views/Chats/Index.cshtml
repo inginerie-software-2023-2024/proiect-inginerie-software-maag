@@ -53,12 +53,7 @@
                                                 @if (chat.UserInChats[0].UserId != ViewBag.currentUser.Id)
                                                 {
                                                     <li class="p-2 border-bottom">
-                                                        <div class="d-flex flex-row btn" onclick="showChat(@JsonSerializer.Serialize(chat.Messages,new JsonSerializerOptions()
-                                                                {
-                                                                    MaxDepth = 0,
-                                                                    IgnoreNullValues = true,
-                                                                    IgnoreReadOnlyProperties = true
-                                                                } ), @chat.ChatId,'@ViewBag.CurrentUser.Id', @chat.UserInChats[0].UserId)">
+                                                        <div class="d-flex flex-row btn" onclick="showChat( @chat.ChatId,'@ViewBag.CurrentUser.Id', '@chat.UserInChats[0].UserId')">
                                                             <div>
                                                                 <img src=@chat.UserInChats[0].User.ProfilePhoto
                                                                      alt="avatar" class="d-flex align-self-center me-3" width="60" />
@@ -81,12 +76,7 @@
 
                                                     <li class="p-2 border-bottom">
 
-                                                        <div class="d-flex flex-row btn" onclick="showChat(@JsonSerializer.Serialize(chat.Messages, new JsonSerializerOptions()
-                                                    {
-                                                        MaxDepth = 0,
-                                                        IgnoreNullValues = true,
-                                                        IgnoreReadOnlyProperties = true
-                                                    }), @chat.ChatId, '@ViewBag.CurrentUser.Id', @chat.UserInChats[1].UserId)">
+                                                        <div class="d-flex flex-row btn" onclick="showChat(@chat.ChatId, '@ViewBag.CurrentUser.Id', '@chat.UserInChats[1].UserId')">
                                                             <div>
                                                                 <img src=@chat.UserInChats[1].User.ProfilePhoto
                                                                      alt="avatar" class="d-flex align-self-center me-3" width="60" />
@@ -150,30 +140,58 @@
     connection.start().catch(err => console.error(err.toString()));
 
     connection.on("ReceiveMessage", (senderUserId, message) => {
+
+        if (localStorage.getItem("receiverId") == senderUserId) {
+            contentString = '<div class="d-flex flex-row justify-content-start" >';
+            contentString += '<div> <p class="small p - 2 me - 3 mb - 1 text - white rounded - 3 bg - primary">';
+            contentString += message;
+            contentString += "</p>";
+            contentString += '<p class="small me - 3 mb - 3 rounded - 3 text - muted">';
+            contentString += "data";
+            contentString += "</p></div></div>";
+            $("#chatBox").append(contentString);
+        }
+
+
+
         console.log(`Message from ${senderUserId}: ${message}`);
     });
 
-    const showChat = (messages, chatId, currentUserId, otherUserId) => {
+    const showChat = async (chatId, currentUserId,receiverUserId) => {
 
-
+   
 
         localStorage.setItem("chatId", chatId);
-        l
+        localStorage.setItem("receiverId", receiverUserId);
+       
         $("#chatBox").empty();
+
+        let messages;
+
+        await $.get("/Chats/GetMessages/"+chatId,
+        function (data, status) {
+            if (status == "success") {
+                console.log(data);
+                messages = data;
+            }
+            else {
+                console.log(status);
+            }
+        });
+
 
 
         for (let message of messages) {
-            console.log(message)
             let contentString = "";
-            if (message.UserId === currentUserId)
+            if (message.userId === currentUserId)
                 contentString += '<div class="d-flex flex-row justify-content-end" >';
             else
                 contentString += '<div class="d-flex flex-row justify-content-start" >';
             contentString += '<div> <p class="small p - 2 me - 3 mb - 1 text - white rounded - 3 bg - primary">';
-            contentString += message.MessageText;
+            contentString += message.messageText;
             contentString += "</p>";
             contentString += '<p class="small me - 3 mb - 3 rounded - 3 text - muted">';
-            contentString += message.SendDate;
+            contentString += message.sendDate;
             contentString += "</p></div></div>";
             $("#chatBox").append(contentString);
         }
@@ -189,16 +207,19 @@
 
     const sendMessage = (senderId) => {
 
+        const message = $("#messageInput").val()
+
+        signalUser(localStorage.getItem("receiverId"), message, new Date());
 
 
-        signalUser("")
+        console.log(localStorage.getItem("receiverId"));
 
         console.log($("#messageInput").val())
 
         $.post("/Chats/AddMessage/", {
-            messageText: $("#messageInput").val(),
+            messageText:message,
             senderId: senderId,
-            chatId: localStorage.getItem("chatId")
+            chatId: localStorage.getItem("chatId"),
         }, function (data, status) {
             if (status == "success") {
                 if (data == "Yes") {
@@ -208,6 +229,16 @@
                 }
             }
         });
+
+        contentString = '<div class="d-flex flex-row justify-content-end" >';
+        contentString += '<div> <p class="small p - 2 me - 3 mb - 1 text - white rounded - 3 bg - primary">';
+        contentString += message;
+        contentString += "</p>";
+        contentString += '<p class="small me - 3 mb - 3 rounded - 3 text - muted">';
+        contentString += "data";
+        contentString += "</p></div></div>";
+        $("#chatBox").append(contentString);
+
     }
 
 
