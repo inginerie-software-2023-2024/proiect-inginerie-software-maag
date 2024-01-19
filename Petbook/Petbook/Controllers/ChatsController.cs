@@ -87,9 +87,15 @@ namespace Petbook.Controllers
         [HttpPost("/Chats/AddMessage/")]
         public IActionResult AddMessage([FromForm]string messageText,
                                         [FromForm] string senderId,
-                                        [FromForm] string chatId)
+                                        [FromForm] string chatId,
+                                        [FromForm] string date)
         {
-            Message newMessage = new Message{ ChatId = Int32.Parse(chatId), MessageText = messageText, UserId = senderId };
+            Message newMessage = new Message{
+                ChatId = Int32.Parse(chatId),
+                MessageText = messageText,
+                UserId = senderId,
+                SendDate = DateTime.ParseExact(date, "M/dd/yyyy hh:mm:ss tt", System.Globalization.CultureInfo.InvariantCulture) 
+            };
             db.Messages.Add(newMessage);
             db.SaveChanges();
 
@@ -102,8 +108,14 @@ namespace Petbook.Controllers
            var messages = db.Chats.Include("Messages").Where(c => c.ChatId == chatId).First().Messages;
 
            return Ok(messages);
-           
-        } 
+
+        }
+
+        [HttpGet("/Chats/GetCurrentDate/")]
+        public IActionResult GetCurrentDate()
+        {
+            return Ok(DateTime.Now.ToString());
+        }
 
     }
 }

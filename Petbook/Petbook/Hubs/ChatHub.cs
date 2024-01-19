@@ -25,14 +25,12 @@ namespace Petbook.Hubs
             return base.OnDisconnectedAsync(exception);
         }
 
-        public async Task SendMessage(string receiverUserId, string message, DateTime messageDate)
+        public async Task SendMessage(string receiverUserId, string message, string messageDate)
         {
             var connectionId = _connectionManager.GetConnection(receiverUserId);
-            Console.WriteLine("---------------------------------------");
-            Console.WriteLine(connectionId);
             if (!string.IsNullOrEmpty(connectionId))
             {
-                await Clients.Client(connectionId).SendAsync("ReceiveMessage", Context.UserIdentifier, message);
+                await Clients.Client(connectionId).SendAsync("ReceiveMessage", Context.UserIdentifier, message, messageDate);
             }
         }
     }
