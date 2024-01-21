@@ -1,0 +1,1 @@
+Petbook App by Panait Ana-Maria, Teodorescu George Tiberiu, Ciocan Alexandra-Diana, Georgescu Miruna is marked with CC0 1.0 

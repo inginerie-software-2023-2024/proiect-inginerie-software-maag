@@ -41,6 +41,99 @@ Project made by:
  </div>
 📗 The Trello board can be found here: https://trello.com/b/CsL3Aw4a/petbook-20.
 
+</br>
+
+**Final version of backlog:**
+ <div align="center"> 
+  <img width="480px" src="https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-maag/blob/main/Trello2.png" alt="Photo">
+ </div>
+
+## 11. Dev sprint reports:
+
+- [Dev sprint report 1](https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-maag/blob/main/Sprint%20Report%201.pdf)
+- [Dev sprint report 2](https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-maag/blob/main/Sprint%20Report%202.pdf)
+- [Dev sprint report 3](https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-maag/blob/main/Sprint%20Report%203.pdf)
+- [Dev sprint report 4](https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-maag/blob/main/Sprint%20Report%204.pdf)
+
+## 12. Software Arhitecture Report
+
+### ❔What the purpose of the software project is
+
+#### a.	Summary
+
+Petbook is a unique social media platform specifically designed for pet owners to connect, share, and engage with fellow pet enthusiasts.
+
+#### b.	Fulfilled capabilities
+At this point the project has the following capabilities:
+
+✔️ share photos of your pets \
+✔️ share text stories related to pets \
+✔️ like and comment posts (photos or stories) \
+✔️ follow users \
+✔️ search user or pet by name \
+✔️ chat in real-time with the users you follow
+
+What is to be done until project fulfillment:
+- the posibility to post a short video of you pet
+- the posibility to send an image or a video in the chat
+
+### ❔Guides on how to:
+
+#### a. Run the project locally
+    1. clone the repository
+    2. open the solution in an IDE like Visual Studio
+    3. Build and run the project using the IDE
+#### b. Build the project
+    1. use the `dotnet` build command in the project directory to compile the project
+#### c. Deploy the project
+    1. publish the project using Visual Studio or `dotnet publish` command
+    2. deploy the published files to a hosting environment
+#### d. [Contribution guide](https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-maag/blob/main/CONTRIBUTING.md)
+
+### 🔧 Application entry points:
+#### a. Data sources
+-> We use `SQL Server` as the database management system, ensuring efficient storage and retrieval of user data.
+
+#### b. Data inputs
+-> We use user inputs through the UI.
+
+#### c. Configuration files
+-> We have a [configuration file](https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-maag/blob/main/Petbook/Petbook/appsettings.json) for the app where we set the database connection string and some settings for logging.
+
+### 🔧 High level diagrams of the arhitecture:
+a. [User journey map](https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-maag/blob/main/User_Journey_Map.pdf)
+
+<div align="center"> 
+<img width="480px" src="https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-maag/blob/main/UserJourneyMapPhoto.png" alt="Photo">
+</div>
+
+b. Most valuable output
+
+// TODO
+
+### 🔧 Deployment plan:
+
+### 🔧 Description of the QA process:
+a. Test suites - what do they test
+
+// TODO
+
+### 🔧 External dependencies included in the project
+- **Entity Framework** - we used [ASP.NET Identity](https://learn.microsoft.com/en-us/aspnet/core/security/authentication/identity?view=aspnetcore-8.0&tabs=visual-studio) for user authentication and authorization
+- **[JQuery](https://jquery.com/)**
+- **[Bootstrap](https://getbootstrap.com/)**
+- **[SignalR 2](https://dotnet.microsoft.com/en-us/apps/aspnet/signalr)** - used for the real-time chat
+- **[Summernote](https://summernote.org/)** - for text editing
+- **[Croppie](https://foliotek.github.io/Croppie/)** - for image cropping
+
+❔How vulnerable is the project to dependency attacks
+    
+// TODO
+
+
+
+
+
 
 
 
