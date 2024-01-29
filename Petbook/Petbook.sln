@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Petbook", "Petbook\Petbook.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PetbookTests", "PetbookTests\PetbookTests.csproj", "{F6C2F091-E9C2-478F-95D6-82FD4B3C5DEC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetBookIntegrationTests", "PetBookIntegrationTests\PetBookIntegrationTests.csproj", "{8107CB86-87D8-49AA-8978-605AD04FB9C2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetBookTestsE2E", "PetBookTestsE2E\PetBookTestsE2E.csproj", "{8107CB86-87D8-49AA-8978-605AD04FB9C2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
