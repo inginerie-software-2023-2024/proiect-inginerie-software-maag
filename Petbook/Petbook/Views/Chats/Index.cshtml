@@ -139,20 +139,27 @@
 <script>
     var connection = new signalR.HubConnectionBuilder().withUrl("/Chat").build();
 
+    console.log("connection = ", connection);
+
     connection.start().catch(err => console.error(err.toString()));
 
     connection.on("ReceiveMessage", (senderUserId, message, date) => {
 
+
         if (localStorage.getItem("receiverId") == senderUserId) {
-            contentString = '<div class="d-flex flex-row justify-content-start my-2 ms-2" > <div class="p-2" style="border-radius: 9px; background-color: #eab676">';
-            contentString += '<div> <div class="text-white" style="text-align: right;">';
-            contentString += message;
-            contentString += "</div>";
-            contentString += '<div class="small text-white-50" style="text-align: right">';
-            contentString += formatDate(date);
-            contentString += "</div></div></div></div>";
-            $("#chatBox").append(contentString);
-            $("#chatBox").animate({scrollTop: $("#chatBox").get(0).scrollHeight}, 0);
+            // Create elements
+            var messageDiv = $('<div>').addClass("d-flex flex-row justify-content-start my-2 ms-2");
+            var innerDiv = $('<div>').addClass("p-2").css("border-radius", "9px").css("background-color", "#eab676");
+            var textDiv = $('<div>').addClass("text-white").css("text-align", "right").text(message);
+            var dateDiv = $('<div>').addClass("small text-white-50").css("text-align", "right").text(formatDate(date));
+
+            // Construct the message structure
+            innerDiv.append(textDiv).append(dateDiv);
+            messageDiv.append(innerDiv);
+
+            // Append to the chat box and scroll
+            $("#chatBox").append(messageDiv);
+            $("#chatBox").animate({ scrollTop: $("#chatBox").get(0).scrollHeight }, 0);
         }
 
         console.log(`Message received from ${senderUserId}: ${message}`);
@@ -230,14 +237,17 @@
             date: date,
         });
 
-        contentString = '<div class="d-flex flex-row justify-content-end my-2 mx-1" > <div class="p-2" style="border-radius: 9px; background-color: #e8bd89">';
-        contentString += '<div> <div class="text-white" style="text-align: right;">';
-        contentString += message;
-        contentString += "</div>";
-        contentString += '<div class="small text-white-50" style="text-align: right">';
-        contentString += formatDate(date);
-        contentString += "</div></div></div></div>";
-        $("#chatBox").append(contentString);
+        var messageDiv = $('<div>').addClass("d-flex flex-row justify-content-start my-2 ms-2");
+        var innerDiv = $('<div>').addClass("p-2").css("border-radius", "9px").css("background-color", "#eab676");
+        var textDiv = $('<div>').addClass("text-white").css("text-align", "right").text(message);
+        var dateDiv = $('<div>').addClass("small text-white-50").css("text-align", "right").text(formatDate(date));
+
+        // Construct the message structure
+        innerDiv.append(textDiv).append(dateDiv);
+        messageDiv.append(innerDiv);
+
+        // Append to the chat box and scroll
+        $("#chatBox").append(messageDiv);
         $("#chatBox").animate({ scrollTop: $("#chatBox").get(0).scrollHeight }, 0);
         $("#messageInput").val("");
     }
