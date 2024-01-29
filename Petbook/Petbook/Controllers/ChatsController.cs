@@ -94,7 +94,7 @@ namespace Petbook.Controllers
                 ChatId = Int32.Parse(chatId),
                 MessageText = messageText,
                 UserId = senderId,
-                SendDate = DateTime.ParseExact(date, "M/dd/yyyy hh:mm:ss tt", System.Globalization.CultureInfo.InvariantCulture) 
+                SendDate = DateTime.ParseExact(date, "M/d/yyyy h:mm:ss tt", System.Globalization.CultureInfo.InvariantCulture) 
             };
             db.Messages.Add(newMessage);
             db.SaveChanges();
