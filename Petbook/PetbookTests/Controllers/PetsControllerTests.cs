@@ -18,6 +18,7 @@ namespace Petbook.Controllers.Tests
     {
         private static PetsController controller;
         private static ApplicationDbContext db;
+        private static int numOfPets = 20;
 
         [TestInitialize]
         public void SetUp()
@@ -77,7 +78,7 @@ namespace Petbook.Controllers.Tests
 
             // Assert that all the pets are loaded in the Pets ViewBag
             List<Pet> list = (List<Pet>)result.ViewData["Pets"];
-            Assert.AreEqual(20, list.Count); // 20 because in mock data we have num=10 and pets have num*2
+            Assert.AreEqual(numOfPets, list.Count); // numOfPets=20 because in mock data we have num=10 and pets have num*2
         }
 
         [TestMethod()]
@@ -125,15 +126,16 @@ namespace Petbook.Controllers.Tests
             // Get all pets before adding the new one
             var result = controller.Index() as ViewResult;
             List<Pet> pets = (List<Pet>)result.ViewData["Pets"];
-            Assert.AreEqual(20, pets.Count); // 20 because in mock data we have num=10 and pets have num*2
+            Assert.AreEqual(numOfPets, pets.Count); // numOfPets=20 because in mock data we have num=10 and pets have num*2
 
             // Add the new pet
             result = controller.New(newPet) as ViewResult;
+            numOfPets++;
 
             // Get all pets after adding the new one
             result = controller.Index() as ViewResult;
             pets = (List<Pet>)result.ViewData["Pets"];
-            Assert.AreEqual(21, pets.Count); // 21 because in mock data we have 20 pets and we added another one
+            Assert.AreEqual(numOfPets, pets.Count); // numOfPets=21 because in mock data we have 20 pets and we added another one
         }
 
         [TestMethod()]
@@ -143,7 +145,7 @@ namespace Petbook.Controllers.Tests
             var mockPets = db.pets;
 
             // Select a pet id to be edited
-            var existingPetId = (mockPets[0] as Pet).PetId;
+            var existingPetId = (mockPets[1] as Pet).PetId;
 
             // Create a new pet object to represent the edited pet
             var editedPet = new Pet
@@ -181,6 +183,7 @@ namespace Petbook.Controllers.Tests
 
             // Select a pet id to be deleted
             var existingPetId = (mockPets[0] as Pet).PetId;
+            var petForDelete = mockPets[0] as Pet;
 
             // Delete the selected pet
             controller.Delete(existingPetId);
@@ -193,7 +196,8 @@ namespace Petbook.Controllers.Tests
             {
                 Assert.AreNotEqual(pet.PetId, existingPetId);
             }
-
+            db.Pets.Add(petForDelete);
+            db.SaveChanges();
         }
     }
 }
