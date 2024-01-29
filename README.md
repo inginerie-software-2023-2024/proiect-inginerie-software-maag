@@ -82,12 +82,23 @@ What is to be done until project fulfillment:
 #### a. Run the project locally
     1. clone the repository
     2. open the solution in an IDE like Visual Studio
-    3. Build and run the project using the IDE
+    3. build and run the project using the IDE
 #### b. Build the project
     1. use the `dotnet` build command in the project directory to compile the project
-#### c. Deploy the project
-    1. publish the project using Visual Studio or `dotnet publish` command
-    2. deploy the published files to a hosting environment
+#### c. Deploy the project on local IIS server
+    1. publish the project using Visual Studio to a web server (IIS) and web deploy (without package)
+    2. open `Windows Features` and enable the following features:
+    -  Internet Information Services -> Web Management Tools -> IIS Management Console
+    -  Internet Information Services -> World Wide Web Services -> Application Deveelopment Featrues -> .NET Extensibility 4.8, Application Initialization, ASP.NET 4.8, ISAPI Extension, ISAPI Filters
+    -  Internet Information Services ->  World Wide Web Services -> Common HTTP Features -> Default Document, Static Content
+    3. check the IIS server is up by visiting http://localhost
+    4. open `Internet Information Services Manager` and in the connections section there should be a `Sites` folder. Right click on it and press on `Add Website` and complete the required information (at physical path you should put C:\inetpub\wwwroot; at IP address put *).
+    5. Install Microsoft SQL Server Development edition from [here](https://www.microsoft.com/en-us/sql-server/sql-server-downloads), also install SQL Server Management Studio (SSMS)
+    6. Create a database named Petbook and copy the content of the database from Visual Studio into it
+    7. Create a user in the database named "IIS APPPOOL\Petbook". You can do this from SSMS by expanding the new database -> Security and right click on users and click on New User.
+    8. Add user to roles: db_datareader and db_datawriter
+    9. Restart the site from IIS Management Console
+    10. Navigate to http://localhost in the browser and the app should be running
 #### d. [Contribution guide](https://github.com/inginerie-software-2023-2024/proiect-inginerie-software-maag/blob/main/CONTRIBUTING.md)
 
 ### 🔧 Application entry points:
@@ -112,6 +123,9 @@ b. Most valuable output
 // TODO
 
 ### 🔧 Deployment plan:
+a. Where is the application deployed
+The application is deployed locally into an IIS Application server
+b. How the CI/CD pipeline works. 
 
 ### 🔧 Description of the QA process:
 a. Test suites - what do they test
