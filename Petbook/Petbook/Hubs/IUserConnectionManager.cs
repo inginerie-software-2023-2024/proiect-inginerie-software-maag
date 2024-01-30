@@ -1,12 +1,14 @@
-﻿namespace Petbook.Hubs
-{
+﻿using System.Collections.Concurrent;
 
+
+namespace Petbook.Hubs
+{
     public interface IUserConnectionManager
-    {
-        void AddConnection(string userId, string connectionId);
-        void RemoveConnection(string connectionId);
-        string GetConnection(string userId);
-    }
+{
+    void AddConnection(string userId, string connectionId);
+    void RemoveConnection(string connectionId);
+    string GetConnection(string userId);
+}
 
     public class UserConnectionManager : IUserConnectionManager
     {
@@ -14,7 +16,10 @@
 
         public void AddConnection(string userId, string connectionId)
         {
+            Console.WriteLine("++++++++++++++++++++++++++++++++++++++++++++");
+            Console.WriteLine(userId + " " + connectionId);
             _connections[userId] = connectionId;
+            Console.WriteLine(_connections[userId]);
         }
 
         public void RemoveConnection(string connectionId)
@@ -32,4 +37,5 @@
             return connectionId;
         }
     }
+
 }

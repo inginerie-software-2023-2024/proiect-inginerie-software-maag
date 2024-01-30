@@ -59,7 +59,7 @@
         
         <div class="d-flex flex-row justify-content-between p-3">
 
-            @if (@Model.Id != ViewBag.UserCurent)
+            @if (@Model.Id == ViewBag.UserCurent)
             {   
                 <div class="p-1">
                     @using (Html.BeginForm(actionName: "Delete", controllerName: "ApplicationUsers", method: FormMethod.Post, routeValues: new { id = @Model.Id }))
@@ -69,10 +69,11 @@
 
                     }
                 </div>
+                <div class="p-1">
+                    <a class="btn btn-outline-primary" href="/ApplicationUsers/Edit/@Model.Id">Edit</a>
+                </div>  
             }
-            <div class="p-1">
-                <a class="btn btn-outline-primary" href="/ApplicationUsers/Edit/@Model.Id">Edit</a>
-            </div>
+           
         </div>
     </div>
 

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Petbook.Data;
 using Petbook.Models;
+using System.Net;
 
 namespace Petbook.Controllers
 {
@@ -92,9 +93,9 @@ namespace Petbook.Controllers
         {
             Message newMessage = new Message{
                 ChatId = Int32.Parse(chatId),
-                MessageText = messageText,
+                MessageText = WebUtility.HtmlEncode(messageText),
                 UserId = senderId,
-                SendDate = DateTime.ParseExact(date, "M/dd/yyyy hh:mm:ss tt", System.Globalization.CultureInfo.InvariantCulture) 
+                SendDate = DateTime.ParseExact(date, "M/d/yyyy h:mm:ss tt", System.Globalization.CultureInfo.InvariantCulture) 
             };
             db.Messages.Add(newMessage);
             db.SaveChanges();

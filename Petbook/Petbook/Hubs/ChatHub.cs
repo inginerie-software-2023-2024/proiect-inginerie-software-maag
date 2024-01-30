@@ -14,6 +14,7 @@ namespace Petbook.Hubs
 
         public override Task OnConnectedAsync()
         {
+            Console.WriteLine("_+++++++++++++++_++++++++++++++_+++++++++++++");
             var userId = Context.UserIdentifier;
             _connectionManager.AddConnection(userId, Context.ConnectionId);
             return base.OnConnectedAsync();
