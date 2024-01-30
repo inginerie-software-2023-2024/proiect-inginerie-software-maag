@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Petbook.Models;
+using System;
 using System.Collections.Generic;
 
 namespace Petbook.Data
@@ -28,7 +29,7 @@ namespace Petbook.Data
         public DbSet<UserInChat> UserInChats { get; set; }
 
         // Mock lists used for tests
-        public List<Object> roles { get; set;  } 
+        public List<Object> roles { get; set; }
         public List<Object> users { get; set; }
         public List<Object> pets { get; set; }
         public List<Object> posts { get; set; }
@@ -39,6 +40,7 @@ namespace Petbook.Data
         public List<Object> blogPostLikes { get; set; }
         public List<Object> tags { get; set; }
         public List<Object> blogPostTags { get; set; }
+        public List<Object> chats { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -225,6 +227,8 @@ namespace Petbook.Data
             list.Add(tags);
             blogPostTags = GetRandomListOfBlogPostTags(tags, blogPosts, num * 7);
             list.Add(blogPostTags);
+            chats = GetRandomListOfChats(users, num / 2);
+            list.Add(chats);
             roles = list[1];
             List<List<Object>> initialEntities = new List<List<Object>>();
             initialEntities.AddRange(new List<List<Object>> { roles, users, pets, posts, postlikes, comments, commentLikes, blogPosts, blogPostLikes, tags, blogPostTags });
@@ -459,7 +463,7 @@ namespace Petbook.Data
                     UserId = (users[random.Next(users.Count)] as ApplicationUser).Id,
                     CommentId = (comments[random.Next(comments.Count)] as Comment).CommentId
                 };
-                if(!commentLikes.Any(l => ((CommentLike) l).UserId == commentLike.UserId && ((CommentLike)l).CommentId == commentLike.CommentId))
+                if (!commentLikes.Any(l => ((CommentLike)l).UserId == commentLike.UserId && ((CommentLike)l).CommentId == commentLike.CommentId))
                 {
                     commentLikes.Add(commentLike);
                 }
@@ -467,6 +471,63 @@ namespace Petbook.Data
             return commentLikes;
 
         }
-    }
 
+        private List<Object> GetRandomListOfChats(List<Object> users, int num)
+        {
+            var chats = new List<Object>();
+            var random = new Random();
+
+            for (int i = 0; i < num; i += 2)
+            {
+                var user1 = users[i] as ApplicationUser;
+                var user2 = users[i + 1] as ApplicationUser;
+
+                var chat = new Chat
+                {
+                    ChatId = i / 2 + 1,
+                    UserInChats = new List<UserInChat>
+                    {
+                         new UserInChat { UserId = user1.Id, User = user1 },
+                         new UserInChat { UserId = user2.Id, User = user2 }
+                    },
+                    Messages = GetRandomListOfMessages(user1.Id, user2.Id, random.Next(5, 15))
+                };
+
+                chats.Add(chat);
+            }
+
+            return chats;
+        }
+
+
+        private List<Message> GetRandomListOfMessages(string userId1, string userId2, int num)
+        {
+            var messages = new List<Message>();
+
+            for (int i = 0; i < num / 2; i++)
+            {
+                var message = new Message
+                {
+                    UserId = userId1,
+                    MessageText = "Random message content " + i,
+                    SendDate = DateTime.Now.AddDays(-i)
+                };
+                messages.Add(message);
+            }
+
+            for (int i = num / 2; i < num; i++)
+            {
+
+                var message = new Message
+                {
+                    UserId = userId2,
+                    MessageText = "Random message content " + i,
+                    SendDate = DateTime.Now.AddDays(-i)
+                };
+                messages.Add(message);
+            }
+            return messages;
+        }
+    }
 }
+
